@@ -38,7 +38,7 @@ images = []
 measurements = []
 
 for line in lines:
-    for i in range(3): # << [MO] what about the steering correction
+    for i in range(3):
         # Update the localpath with the cloudpath
         source_path = line[i] # local path 
         filename = source_path.split('\\')[-1] # ('/')[-1] # file name
