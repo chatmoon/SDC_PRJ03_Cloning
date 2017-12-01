@@ -19,8 +19,8 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 
 # Parameter
-nb_epoch     = 10
-batch_size   = 32
+nb_epoch     = 4  # 10
+batch_size   = 1000 # 32
 delta        = 0.2
 input_shape  = (160, 320, 3)
 
@@ -29,7 +29,7 @@ input_shape  = (160, 320, 3)
 # Read driving_log.csv file
 #import csv
 pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/data/'
-pathData1 = pathData0+'sample/' # 'sample/'  'myData_171126-1643/'
+pathData1 = pathData0+'myData_171126-1643/' # 'sample/'  'myData_171126-1643/'
 pathData2 = pathData1+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
 
 lines = []
@@ -97,8 +97,8 @@ def generator(lines, batch_size = 32, delta = 0.2):
 
 # In[ X ]: BUILD MODEL TO PREDICT MY STEERING ANGLE
 # Generate training and validation dataset
-train_generator      = generator(train_lines, batch_size=32, delta=0.2)
-validation_generator = generator(validation_lines, batch_size=32, delta=0.2)
+train_generator      = generator(train_lines, batch_size=batch_size, delta=delta)
+validation_generator = generator(validation_lines, batch_size=batch_size, delta=delta)
 
 # Build the model: nvidea model
 model = Sequential()
