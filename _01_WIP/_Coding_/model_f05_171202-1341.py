@@ -17,6 +17,8 @@ from keras.callbacks import Callback, ModelCheckpoint, EarlyStopping, TensorBoar
 import os
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
+from datetime import datetime as dt
+import time
 
 # Parameter
 nb_epoch     = 2  # 10
@@ -32,7 +34,8 @@ pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralClon
 pathData1 = pathData0+'data/'
 pathData2 = pathData1+'myDebug/' # 'myDebug/' 'sample/'  'myData_171126-1643/'
 pathData3 = pathData2+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
-
+pathData4 = pathData0+'log/'
+pathData5 = pathData4+'model/'
 
 lines = []
 with open(pathData2+'driving_log.csv') as csvfile:
@@ -93,18 +96,6 @@ def generator(lines, batch_size=batch_size, delta=delta):
 
             yield shuffle(X_train, y_train)
 
-# class save_w(Callback):
-#     """
-#     save model weights at the end of each epoch.
-#     """
-#     def __init__(self,path):
-#         #super().__init__()
-#         self.path      = path
-
-#     def on_epoch_end(self):
-#         self.model.save_w(self.path+'modNvidia_epoch_{}.h5'.format(epoch + 1)) 
-
-
 
 # In[ X ]: BUILD MODEL TO PREDICT MY STEERING ANGLE
 # Generate training and validation dataset
@@ -131,18 +122,24 @@ model.summary()
 # Compile the model
 model.compile(loss='mse', optimizer='adam')
 
+# Checkpoint: fault tolerance technique
+#from datetime import datetime as dt
+#import time
+pathFile   = pathData5+'ckpt_W_'+dt.now().strftime("%y%m%d_%H%M")+'_{epoch:02d}_{val_loss:.2f}.hdf5'
+checkpoint = ModelCheckpoint(pathFile, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+callbacks_list = [checkpoint]
 
 model.fit_generator(train_generator,
                     steps_per_epoch  = len(train_lines),
                     epochs           = nb_epoch,
                     verbose          = 1,
-                    callbacks        = None,
+                    callbacks        = callbacks_list,
                     validation_data  = validation_generator,
                     validation_steps = len(validation_lines),
                     initial_epoch    = 0 ) 
 
 # Save the trained model
-model.save_weights('model_weights.h5')
+#model.save_weights('model_weights.h5')
 model.save('model.h5')
 
 '''
