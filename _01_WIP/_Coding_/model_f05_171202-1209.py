@@ -19,7 +19,7 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 
 # Parameter
-nb_epoch     = 4  # 10
+nb_epoch     = 2  # 10
 batch_size   = 32 # 32 50 1000
 delta        = 0.2
 input_shape  = (160, 320, 3)
@@ -30,7 +30,7 @@ input_shape  = (160, 320, 3)
 #import csv
 pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
 pathData1 = pathData0+'data/'
-pathData2 = pathData1+'myData_171126-1643/' # 'sample/'  'myData_171126-1643/'
+pathData2 = pathData1+'myDebug/' # 'myDebug/' 'sample/'  'myData_171126-1643/'
 pathData3 = pathData2+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
 
 
@@ -97,12 +97,13 @@ class save_w(Callback):
     """
     save model weights at the end of each epoch.
     """
-    def __init__(self,path,modelname):
+    def __init__(self,path):
+        #super().__init__()
         self.path      = path
-        self.modelname = modelname
 
-    def on_epoch_end(self, epoch):
-        self.model.save_weights(self.path+self.modelname+'_epoch_{}.h5'.format(epoch + 1))
+    def on_epoch_end(self):
+        self.model.save_w(self.path+'modNvidia_epoch_{}.h5'.format(epoch + 1)) 
+
 
 
 # In[ X ]: BUILD MODEL TO PREDICT MY STEERING ANGLE
@@ -135,17 +136,10 @@ model.fit_generator(train_generator,
                     steps_per_epoch  = len(train_lines),
                     epochs           = nb_epoch,
                     verbose          = 1,
-                    callbacks        = [save_w(path=pathData0, modelname='nvidia')],  # [model.save_weights('my_model_weights.h5')]  # None, 
+                    callbacks        = [save_w(pathData2)],
                     validation_data  = validation_generator,
                     validation_steps = len(validation_lines),
                     initial_epoch    = 0 ) 
-
-
-## Spplit and shuffle dataset then Train the model
-#        model.fit(X_train, y_train,/
-#                  validation_split=0.2,/
-#                  shuffle=True,/
-#                  epochs=nb_epoch) 
 
 # Save the trained model
 model.save('model.h5')
