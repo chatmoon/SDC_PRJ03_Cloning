@@ -93,16 +93,16 @@ def generator(lines, batch_size=batch_size, delta=delta):
 
             yield shuffle(X_train, y_train)
 
-class save_w(Callback):
-    """
-    save model weights at the end of each epoch.
-    """
-    def __init__(self,path):
-        #super().__init__()
-        self.path      = path
+# class save_w(Callback):
+#     """
+#     save model weights at the end of each epoch.
+#     """
+#     def __init__(self,path):
+#         #super().__init__()
+#         self.path      = path
 
-    def on_epoch_end(self):
-        self.model.save_w(self.path+'modNvidia_epoch_{}.h5'.format(epoch + 1)) 
+#     def on_epoch_end(self):
+#         self.model.save_w(self.path+'modNvidia_epoch_{}.h5'.format(epoch + 1)) 
 
 
 
@@ -113,7 +113,7 @@ validation_generator = generator(validation_lines, batch_size=batch_size, delta=
 
 # Build the model: nvidea model
 model = Sequential()
-model.add(Lambda(lambda x: x/255.0-0.5, input_shape=input_shape)) #model.add(Lambda(lambda x: x/127.5-1.0, input_shape=X_train.shape[1:]))
+model.add(Lambda(lambda x: x/255.0-0.5, input_shape=input_shape))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
 model.add(Conv2D(24, (5, 5), activation='elu', strides=(2, 2)))
 model.add(Conv2D(36, (5, 5), activation='elu', strides=(2, 2)))
@@ -136,12 +136,13 @@ model.fit_generator(train_generator,
                     steps_per_epoch  = len(train_lines),
                     epochs           = nb_epoch,
                     verbose          = 1,
-                    callbacks        = [save_w(pathData2)],
+                    callbacks        = None,
                     validation_data  = validation_generator,
                     validation_steps = len(validation_lines),
                     initial_epoch    = 0 ) 
 
 # Save the trained model
+model.save_weights('model_weights.h5')
 model.save('model.h5')
 
 '''
