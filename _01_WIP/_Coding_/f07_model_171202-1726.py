@@ -41,9 +41,6 @@ with open(pathData2+'driving_log.csv') as csvfile:
 #from sklearn.model_selection import train_test_split
 train_lines, validation_lines = train_test_split(lines, test_size=0.2) # Do we need it?, see model.fit(xx, validation_split=0.2,xxx)
 
-
-
-
 # In[ X ]: BUILD MODEL TO PREDICT MY STEERING ANGLE
 # Generate training and validation dataset
 train_generator      = generator(train_lines, batch_size=batch_size, delta=delta)
@@ -52,7 +49,7 @@ validation_generator = generator(validation_lines, batch_size=batch_size, delta=
 # Build the model: nvidea model
 model = Sequential()
 model.add(Lambda(lambda x: x/255.0-0.5, input_shape=input_shape))
-model.add(Cropping2D(cropping=((70,25),(0,0))))
+model.add(Cropping2D(cropping=((70,25),(0,0)))) # see test_cropping2D.py (top_crop, bottom_crop),(left_crop, right_crop)
 model.add(Conv2D(24, (5, 5), activation='elu', strides=(2, 2)))
 model.add(Conv2D(36, (5, 5), activation='elu', strides=(2, 2)))
 model.add(Conv2D(48, (5, 5), activation='elu', strides=(2, 2)))
