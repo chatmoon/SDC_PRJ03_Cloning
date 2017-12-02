@@ -13,14 +13,14 @@ from keras.layers import Flatten, Dense, Lambda, Dropout
 from keras.layers.convolutional import Conv2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
 from keras.optimizers import Adam
-from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
+from keras.callbacks import Callback, ModelCheckpoint, EarlyStopping, TensorBoard
 import os
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 
 # Parameter
-nb_epoch     = 10
-batch_size   = 32
+nb_epoch     = 2  # 10
+batch_size   = 32 # 32 50 1000
 delta        = 0.2
 input_shape  = (160, 320, 3)
 
@@ -28,12 +28,14 @@ input_shape  = (160, 320, 3)
  
 # Read driving_log.csv file
 #import csv
-pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/data/'
-pathData1 = pathData0+'sample/' # 'sample/'  'myData_171126-1643/'
-pathData2 = pathData1+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
+pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
+pathData1 = pathData0+'data/'
+pathData2 = pathData1+'myDebug/' # 'myDebug/' 'sample/'  'myData_171126-1643/'
+pathData3 = pathData2+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
+
 
 lines = []
-with open(pathData1+'driving_log.csv') as csvfile:
+with open(pathData2+'driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
@@ -41,11 +43,8 @@ with open(pathData1+'driving_log.csv') as csvfile:
 # Split dataset into two set: train, validation
 #from sklearn.model_selection import train_test_split
 train_lines, validation_lines = train_test_split(lines, test_size=0.2) # Do we need it?, see model.fit(xx, validation_split=0.2,xxx)
-print('')
-print('train_lines = {}, validation_lines = {}'.format(len(train_lines), len(validation_lines)))
-print('')
 
-def generator(lines, batch_size = 32, delta = 0.2):
+def generator(lines, batch_size=batch_size, delta=delta):
     num_lines = len(lines)
     while 1: # Loop forever so the generator never terminates
         shuffle(lines)
@@ -61,7 +60,7 @@ def generator(lines, batch_size = 32, delta = 0.2):
                     # Update the localpath with the cloudpath
                     source_path = batch_sample[i] # source_path = line[i] # local path 
                     filename = source_path.split('\\')[-1] # ('/')[-1] # file name
-                    current_path = pathData2 + filename
+                    current_path = pathData3 + filename
 
                     # Import images
                     image = cv2.imread(current_path)
@@ -94,11 +93,23 @@ def generator(lines, batch_size = 32, delta = 0.2):
 
             yield shuffle(X_train, y_train)
 
+class save_w(Callback):
+    """
+    save model weights at the end of each epoch.
+    """
+    def __init__(self,path):
+        #super().__init__()
+        self.path      = path
+
+    def on_epoch_end(self):
+        self.model.save_w(self.path+'modNvidia_epoch_{}.h5'.format(epoch + 1)) 
+
+
 
 # In[ X ]: BUILD MODEL TO PREDICT MY STEERING ANGLE
 # Generate training and validation dataset
-train_generator      = generator(train_lines, batch_size=32, delta=0.2)
-validation_generator = generator(validation_lines, batch_size=32, delta=0.2)
+train_generator      = generator(train_lines, batch_size=batch_size, delta=delta)
+validation_generator = generator(validation_lines, batch_size=batch_size, delta=delta)
 
 # Build the model: nvidea model
 model = Sequential()
@@ -121,22 +132,14 @@ model.summary()
 model.compile(loss='mse', optimizer='adam')
 
 
-
 model.fit_generator(train_generator,
                     steps_per_epoch  = len(train_lines),
                     epochs           = nb_epoch,
                     verbose          = 1,
-                    callbacks        = None,
+                    callbacks        = [save_w(pathData2)],
                     validation_data  = validation_generator,
                     validation_steps = len(validation_lines),
-                     initial_epoch   = 0 ) 
-
-
-## Spplit and shuffle dataset then Train the model
-#        model.fit(X_train, y_train,/
-#                  validation_split=0.2,/
-#                  shuffle=True,/
-#                  epochs=nb_epoch) 
+                    initial_epoch    = 0 ) 
 
 # Save the trained model
 model.save('model.h5')
