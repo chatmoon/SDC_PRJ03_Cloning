@@ -75,8 +75,8 @@ model.compile(loss='mse', optimizer='adam')
 pathFile   = pathData5+'ckpt_W_'+dt.now().strftime("%y%m%d_%H%M")+'_{epoch:02d}_{val_loss:.2f}.hdf5'
 checkpoint = ModelCheckpoint(pathFile, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 earlystop  = EarlyStopping(monitor='val_loss', patience=3, verbose=1, mode='min')
-#tensorboard= TensorBoard(log_dir=pathData4, histogram_freq=0, batch_size=32, write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embe ddings_metadata=None) 
-callbacks_list = [earlystop,checkpoint]
+tensorboard= TensorBoard(log_dir=pathData6, histogram_freq=0, batch_size=batch_size, write_graph=False, write_grads=False, write_images=True, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None) 
+callbacks_list = [earlystop,checkpoint, tensorboard]
 
 # Callbacks.History: display training_loss and val_loss
 #import matplotlib.pyplot as plt
