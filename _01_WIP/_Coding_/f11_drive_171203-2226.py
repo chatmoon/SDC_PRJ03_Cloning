@@ -69,12 +69,20 @@ def telemetry(sid, data):
         # a = input('<press key>')
 
         # [mo] Cropping-and-Resizing
-        image_crop   = image_array[70:-25, :, :]    # (65,320,3)
-        image_resize = cv2.resize(image_crop, (image_width, image_height), cv2.INTER_AREA)
+        image_crop     = image_array[70:-25, :, :]    # (65,320,3)
+        image_resize   = cv2.resize(image_crop, (image_width, image_height), cv2.INTER_AREA)
         steering_angle = float(model.predict(image_resize[None, :, :, :], batch_size=1))
 
-        throttle = controller.update(float(speed))
+        # [mo] windows 10 somewhere in Europe: ',' vs '.'
+        #steering_angle = str(steering_angle)
+        #steering_angle = steering_angle.replace('.',',')
+        #steering_angle = float(steering_angle)
 
+        #speed = str(speed)
+        #speed = speed.replace('.',',')
+        #speed = float(speed)
+
+        throttle = controller.update(float(speed))
         print(steering_angle, throttle)
         send_control(steering_angle, throttle)
 
