@@ -20,6 +20,7 @@ from sklearn.model_selection import train_test_split
 from datetime import datetime as dt
 import time
 from tools import *
+from tools import generator
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
@@ -46,8 +47,8 @@ train_lines, validation_lines = train_test_split(lines, test_size=0.2) # Do we n
 
 # In[ X ]: BUILD MODEL TO PREDICT MY STEERING ANGLE
 # Generate training and validation dataset
-train_generator      = generator(train_lines, batch_size=batch_size, delta=delta)
-validation_generator = generator(validation_lines, batch_size=batch_size, delta=delta)
+train_generator      = generator(train_lines, batch_size=batch_size, delta=delta, image_width=image_width,image_height=image_height)
+validation_generator = generator(validation_lines, batch_size=batch_size, delta=delta, image_width=image_width,image_height=image_height)
 
 # Build the model: nvidea model
 model = Sequential()

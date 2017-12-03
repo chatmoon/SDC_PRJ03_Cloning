@@ -14,6 +14,7 @@ image_width  = 155  # 32
 image_height = 32
 
 def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_height=image_height):
+    count = 0   # <- delete
     num_lines = len(lines)
     while True: # Loop forever so the generator never terminates
         shuffle(lines)
@@ -46,8 +47,8 @@ def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_hei
                         angles.append(angle)
 
             # Convert images and labels into np.array
-            X_train = np.array(images)
-            y_train = np.array(angles)
+            # X_train = np.array(images)
+            # y_train = np.array(angles)
 
 
             # In[ X ]: DATA AUGMENTATION
@@ -55,11 +56,11 @@ def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_hei
             for image, angle in zip(images,angles):
                 image_crop, image_resize, image_flip, angle_flip, image_hsv = [], [], [], [], []
                 # Crop
-                image_crop   = image[70:-25, :, :]
+                image_crop   = image[70:-25, :, :]    # (65,320,3)
                 # Resize: http://tanbakuchi.com/posts/comparison-of-openv-interpolation-algorithms/
                 image_resize = cv2.resize(image_crop, (image_width, image_height), cv2.INTER_AREA)
                 # Save before randomly flipt or changing brightness
-                augmented_images.append(image_resize)
+                augmented_images.append(image_resize) # (32,155,3)
                 augmented_angles.append(angle)
                 if np.random.rand() < 0.5:
                     # Randomly flipt the image and adjust the steering angle
@@ -75,7 +76,8 @@ def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_hei
                     augmented_angles.append(angle_flip)
 
             # Convert images and labels into np.array
-            X_train = np.array(augmented_images)
+            X_train = np.array(augmented_images)  # X_train.shape = (143, 32, 155, 3)
             y_train = np.array(augmented_angles)
+
 
             yield shuffle(X_train, y_train)
