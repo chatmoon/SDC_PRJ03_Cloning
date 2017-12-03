@@ -19,10 +19,12 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from datetime import datetime as dt
 import time
-from f06_tools import *
+from tools import *
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 # Parameter
-nb_epoch     = 2  # 10
+nb_epoch     = 30  # 10
 batch_size   = 32 # 32 50 1000
 delta        = 0.2
 input_shape  = (160, 320, 3)
@@ -40,8 +42,6 @@ with open(pathData2+'driving_log.csv') as csvfile:
 # Split dataset into two set: train, validation
 #from sklearn.model_selection import train_test_split
 train_lines, validation_lines = train_test_split(lines, test_size=0.2) # Do we need it?, see model.fit(xx, validation_split=0.2,xxx)
-
-
 
 
 # In[ X ]: BUILD MODEL TO PREDICT MY STEERING ANGLE
@@ -69,21 +69,38 @@ model.summary()
 # Compile the model
 model.compile(loss='mse', optimizer='adam')
 
-# Checkpoint: fault tolerance technique
+# Callbacks.Checkpoint: fault tolerance technique
 #from datetime import datetime as dt
 #import time
 pathFile   = pathData5+'ckpt_W_'+dt.now().strftime("%y%m%d_%H%M")+'_{epoch:02d}_{val_loss:.2f}.hdf5'
 checkpoint = ModelCheckpoint(pathFile, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
-callbacks_list = [checkpoint]
+earlystop  = EarlyStopping(monitor='val_loss', patience=3, verbose=1, mode='min')
+#tensorboard= TensorBoard(log_dir=pathData4, histogram_freq=0, batch_size=32, write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embe ddings_metadata=None) 
+callbacks_list = [earlystop,checkpoint]
 
-model.fit_generator(train_generator,
+# Callbacks.History: display training_loss and val_loss
+#import matplotlib.pyplot as plt
+#import matplotlib.image as mpimg
+history    = model.fit_generator(train_generator,
                     steps_per_epoch  = len(train_lines),
                     epochs           = nb_epoch,
                     verbose          = 1,
                     callbacks        = callbacks_list,
                     validation_data  = validation_generator,
-                    validation_steps = len(validation_lines),
-                    initial_epoch    = 0 ) 
+                    validation_steps = len(validation_lines)
+                    ) 
+
+# list history.keys()
+print(history.history.keys())
+
+# plot loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'valid.'], loc='upper left')
+plt.show()
 
 # Save the trained model
 #model.save_weights('model_weights.h5')
