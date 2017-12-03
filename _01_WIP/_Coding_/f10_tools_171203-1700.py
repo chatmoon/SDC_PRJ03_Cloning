@@ -5,13 +5,15 @@ from sklearn.utils import shuffle
 
 pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
 pathData1 = pathData0+'data/'
-pathData2 = pathData1+'myDebug/' # 'myDebug/' 'sample/'  'myData_171202-0037/'
+pathData2 = pathData1+'myDebug/' # BEFORE USING SAMPLE CHANGE DRIVE.PY ',' vs '.' # 'myDebug/' 'sample/' < NOT USE 'myData_171202-0037/' >
 pathData3 = pathData2+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
 pathData4 = pathData0+'logs/'
 pathData5 = pathData4+'model/'
 pathData6 = pathData4+'nn_logs/'
+image_width  = 155  # 32
+image_height = 32
 
-def generator(lines, batch_size=32, delta=0.2):
+def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_height=image_height):
     num_lines = len(lines)
     while True: # Loop forever so the generator never terminates
         shuffle(lines)
@@ -21,6 +23,8 @@ def generator(lines, batch_size=32, delta=0.2):
             # Import images and labels
             images = []
             angles = []
+            # image_width  = 155  # 32
+            # image_height = 32
          
             for batch_sample in batch_lines: # for line in lines:
                 for i in range(3):
@@ -49,11 +53,17 @@ def generator(lines, batch_size=32, delta=0.2):
             # In[ X ]: DATA AUGMENTATION
             augmented_images, augmented_angles = [], []
             for image, angle in zip(images,angles):
-                augmented_images.append(image)
+                image_crop, image_resize, image_flip, angle_flip, image_hsv = [], [], [], [], []
+                # Crop
+                image_crop   = image[70:-25, :, :]
+                # Resize: http://tanbakuchi.com/posts/comparison-of-openv-interpolation-algorithms/
+                image_resize = cv2.resize(image_crop, (image_width, image_height), cv2.INTER_AREA)
+                # Save before randomly flipt or changing brightness
+                augmented_images.append(image_resize)
                 augmented_angles.append(angle)
                 if np.random.rand() < 0.5:
                     # Randomly flipt the image and adjust the steering angle
-                    image_flip = cv2.flip(image,1)
+                    image_flip = cv2.flip(image_resize,1)
                     angle_flip = angle*(-1.0)
                     # Randomly change brightness (to simulate day and night conditions)
                     image_hsv  = cv2.cvtColor(image_flip, cv2.COLOR_RGB2HSV) # hsv: hue, saturation, value
