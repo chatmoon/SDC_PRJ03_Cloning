@@ -5,10 +5,11 @@ from sklearn.utils import shuffle
 
 pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
 pathData1 = pathData0+'data/'
-pathData2 = pathData1+'myData_171202-0037/' # 'myDebug/' 'sample/'  'myData_171202-0037/'
+pathData2 = pathData1+'myDebug/' # 'myDebug/' 'sample/'  'myData_171202-0037/'
 pathData3 = pathData2+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
-pathData4 = pathData0+'log/'
+pathData4 = pathData0+'logs/'
 pathData5 = pathData4+'model/'
+pathData6 = pathData4+'nn_logs/'
 
 def generator(lines, batch_size=32, delta=0.2):
     num_lines = len(lines)
