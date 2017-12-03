@@ -27,7 +27,7 @@ import matplotlib.image as mpimg
 nb_epoch     = 30  # 10
 batch_size   = 32 # 32 50 1000
 delta        = 0.2
-input_shape  = (160, 320, 3)
+input_shape  = (image_height, image_width, 3) # (160, 320, 3)
 
 # In[ 1 ]: LOAD IMAGES AND LABELS
  
@@ -52,7 +52,7 @@ validation_generator = generator(validation_lines, batch_size=batch_size, delta=
 # Build the model: nvidea model
 model = Sequential()
 model.add(Lambda(lambda x: x/255.0-0.5, input_shape=input_shape))
-model.add(Cropping2D(cropping=((70,25),(0,0))))
+#model.add(Cropping2D(cropping=((70,25),(0,0))))
 model.add(Conv2D(24, (5, 5), activation='elu', strides=(2, 2)))
 model.add(Conv2D(36, (5, 5), activation='elu', strides=(2, 2)))
 model.add(Conv2D(48, (5, 5), activation='elu', strides=(2, 2)))
