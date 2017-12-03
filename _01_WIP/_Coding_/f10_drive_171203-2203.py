@@ -63,16 +63,15 @@ def telemetry(sid, data):
         # The current image from the center camera of the car
         imgString = data["image"]
         image = Image.open(BytesIO(base64.b64decode(imgString)))
-        
-        #print('len image = {}'.format(len(image)))  # [mo] delete
-        # [mo] Cropping-and-Resizing
-        image_crop   = image[70:-25, :, :]    # (65,320,3)
-        image_resize = cv2.resize(image_crop, (image_width, image_height), cv2.INTER_AREA)
-          # Convert images into np.array
-          
-        image_array = np.asarray(image_resize)
+        image_array = np.asarray(image)
 
-        steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
+        # print('image_array.shape = {}'.format(image_array.shape))  # [mo] delete
+        # a = input('<press key>')
+
+        # [mo] Cropping-and-Resizing
+        image_crop   = image_array[70:-25, :, :]    # (65,320,3)
+        image_resize = cv2.resize(image_crop, (image_width, image_height), cv2.INTER_AREA)
+        steering_angle = float(model.predict(image_resize[None, :, :, :], batch_size=1))
 
         throttle = controller.update(float(speed))
 
