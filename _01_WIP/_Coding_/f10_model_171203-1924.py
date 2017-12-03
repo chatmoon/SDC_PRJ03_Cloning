@@ -53,11 +53,11 @@ validation_generator = generator(validation_lines, batch_size=batch_size, delta=
 model = Sequential()
 model.add(Lambda(lambda x: x/255.0-0.5, input_shape=input_shape))
 #model.add(Cropping2D(cropping=((70,25),(0,0))))
-model.add(Conv2D(24, (5, 5), activation='elu', strides=(2, 2)))
-model.add(Conv2D(36, (5, 5), activation='elu', strides=(2, 2)))
-model.add(Conv2D(48, (5, 5), activation='elu', strides=(2, 2)))
-model.add(Conv2D(64, (3, 3), activation='elu'))
-model.add(Conv2D(64, (3, 3), activation='elu'))
+model.add(Conv2D(16, (5, 5), activation='elu', strides=(2, 2)))
+model.add(Conv2D(32, (5, 5), activation='elu', strides=(2, 2)))
+model.add(Conv2D(64, (3, 3), activation='elu', strides=(2, 2)))
+#model.add(Conv2D(64, (3, 3), activation='elu'))
+#model.add(Conv2D(64, (3, 3), activation='elu'))
 model.add(Dropout(0.5))
 model.add(Flatten())
 model.add(Dense(100, activation='elu'))
@@ -72,10 +72,13 @@ model.compile(loss='mse', optimizer='adam')
 # Callbacks.Checkpoint: fault tolerance technique
 #from datetime import datetime as dt
 #import time
-pathFile   = pathData5+'ckpt_W_'+dt.now().strftime("%y%m%d_%H%M")+'_{epoch:02d}_{val_loss:.2f}.hdf5'
-checkpoint = ModelCheckpoint(pathFile, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+postfix    = dt.now().strftime("%y%m%d_%H%M")
+pathFile0  = pathData6+postfix+'/'  
+pathFile1  = pathFile0+'ckpt_W_{epoch:02d}_{val_loss:.2f}.hdf5'
+
+checkpoint = ModelCheckpoint(pathFile1, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 earlystop  = EarlyStopping(monitor='val_loss', patience=3, verbose=1, mode='min')
-tensorboard= TensorBoard(log_dir=pathData6, histogram_freq=0, batch_size=batch_size, write_graph=False, write_grads=False, write_images=True, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None) 
+tensorboard= TensorBoard(log_dir=pathFile0, histogram_freq=0, batch_size=batch_size, write_graph=False, write_grads=False, write_images=True, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None) 
 callbacks_list = [earlystop,checkpoint, tensorboard]
 
 # Callbacks.History: display training_loss and val_loss
@@ -104,7 +107,7 @@ plt.show()
 
 # Save the trained model
 #model.save_weights('model_weights.h5')
-model.save('model.h5')
+model.save(pathFile0+'model.h5')
 
 '''
 Next: download the model and see how well it drives the car in the simulator
