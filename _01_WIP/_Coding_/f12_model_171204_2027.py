@@ -53,20 +53,14 @@ validation_generator = generator(validation_lines, batch_size=batch_size, delta=
 model = Sequential()
 model.add(Lambda(lambda x: x/255.0-0.5, input_shape=input_shape))
 model.add(Conv2D(24, (5, 5), padding='valid', activation='elu', strides=(2, 2)))
-model.add(Dropout(0.5)) # <- to remove
 model.add(Conv2D(32, (5, 5), padding='valid', activation='elu', strides=(2, 2)))
-model.add(Dropout(0.5)) # <- to remove
 model.add(Conv2D(64, (3, 3), padding='valid', activation='elu', strides=(2, 2)))
-#model.add(Conv2D(64, (3, 3), activation='elu'))
-#model.add(Conv2D(64, (3, 3), activation='elu'))
-
-# model.add(MaxPooling2D(... # <- to add
+model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.5))
 model.add(Flatten())
 model.add(Dense(100, activation='elu'))
-model.add(Dropout(0.5)) # <- to remove
 model.add(Dense(50, activation='elu'))
-model.add(Dropout(0.5))
+model.add(Dropout(0.2))
 model.add(Dense(10, activation='elu'))
 model.add(Dense(1))
 model.summary()
