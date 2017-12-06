@@ -8,7 +8,7 @@ Created on Mon Nov 27 11:55:04 2017
 import csv
 import cv2
 import numpy as np
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Flatten, Dense, Lambda, Dropout
 from keras.layers.convolutional import Conv2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
@@ -49,21 +49,22 @@ train_lines, validation_lines = train_test_split(lines, test_size=0.2) # Do we n
 train_generator      = generator(train_lines, batch_size=batch_size, delta=delta, image_width=image_width,image_height=image_height)
 validation_generator = generator(validation_lines, batch_size=batch_size, delta=delta, image_width=image_width,image_height=image_height)
 
-# Build the model: nvidea model
-model = Sequential()
-model.add(Lambda(lambda x: x/255.0-0.5, input_shape=input_shape))
-model.add(Conv2D(24, (5, 5), padding='valid', activation='elu', strides=(2, 2)))
-model.add(Conv2D(32, (5, 5), padding='valid', activation='elu', strides=(2, 2)))
-model.add(Conv2D(64, (3, 3), padding='valid', activation='elu', strides=(2, 2)))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Dropout(0.5))
-model.add(Flatten())
-model.add(Dense(100, activation='elu'))
-model.add(Dense(50, activation='elu'))
-model.add(Dropout(0.2))
-model.add(Dense(10, activation='elu'))
-model.add(Dense(1))
-model.summary()
+
+# Transfer learning: end of the pre-trained nvidia model
+model = load_model(pathData0+'model.h5') # load the pre-trained model
+model.pop() # slice off the end of the neuural network
+model.add(Dense(1)) # add a new fully connected layer
+model.layers[-1].name = 'dense_4'
+
+# Freeze all layers except the last one
+for i, layer in enumerate(model.layers[:-1]):
+    layer.trainable = False
+    print('< {} > {}'.format(i, layer.name))
+# Unfreeze the last layer
+model.layers[-1].trainable = True
+print('< {} > {}'.format(len(model.layers)-1, model.layers[-1].name))
+
+model.summary() # print the summary representation of the model
 
 # Compile the model
 model.compile(loss='mse', optimizer='adam')
@@ -105,9 +106,5 @@ plt.legend(['train', 'valid.'], loc='upper left')
 plt.show()
 
 # Save the trained model
-#model.save_weights('model_weights.h5')
+model.save_weights('model_weights.h5')
 model.save(pathFile0+'model.h5')
-
-'''
-Next: download the model and see how well it drives the car in the simulator
-'''

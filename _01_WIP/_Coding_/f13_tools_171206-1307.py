@@ -5,7 +5,7 @@ from sklearn.utils import shuffle
 
 pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
 pathData1 = pathData0+'data/'
-pathData2 = pathData1+'myDebug/' # BEFORE USING SAMPLE CHANGE DRIVE.PY ',' vs '.' # 'myDebug/' 'sample/' < NOT USE 'myData_171202-0037/' >
+pathData2 = pathData1+'sampleDirty/' # 'sampleDirty/' 'myDebug/' 'sample/' < DON'T USE 'myData_171202-0037/' >
 pathData3 = pathData2+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
 pathData4 = pathData0+'logs/'
 pathData5 = pathData4+'model/'
@@ -14,7 +14,6 @@ image_width  = 155  # 32
 image_height = 32
 
 def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_height=image_height):
-    count = 0   # <- delete
     num_lines = len(lines)
     while True: # Loop forever so the generator never terminates
         shuffle(lines)
@@ -24,8 +23,6 @@ def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_hei
             # Import images and labels
             images = []
             angles = []
-            # image_width  = 155  # 32
-            # image_height = 32
          
             for batch_sample in batch_lines: # for line in lines:
                 for i in range(3):
@@ -62,10 +59,10 @@ def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_hei
                 # Save before randomly flipt or changing brightness
                 augmented_images.append(image_resize) # (32,155,3)
                 augmented_angles.append(angle)
+                # Flipt the image and adjust the steering angle
+                image_flip = cv2.flip(image_resize,1)
+                angle_flip = angle*(-1.0)
                 if np.random.rand() < 0.5:
-                    # Randomly flipt the image and adjust the steering angle
-                    image_flip = cv2.flip(image_resize,1)
-                    angle_flip = angle*(-1.0)
                     # Randomly change brightness (to simulate day and night conditions)
                     image_hsv  = cv2.cvtColor(image_flip, cv2.COLOR_RGB2HSV) # hsv: hue, saturation, value
                     rate       = 1.0 + 0.4 * (np.random.rand() - 0.5)
