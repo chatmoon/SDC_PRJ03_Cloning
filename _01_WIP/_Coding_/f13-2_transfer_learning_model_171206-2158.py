@@ -19,12 +19,14 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from datetime import datetime as dt
 import time
-from tools import *
+from f13_2_transfer_learning_tools_171206_2158 import *
+#from transfer_learning_tools import *
+#from tools import *
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 # Parameter
-nb_epoch     = 5  # 10
+nb_epoch     = 10  # 10
 batch_size   = 32 # 32 50 1000
 delta        = 0.2
 input_shape  = (image_height, image_width, 3) # (160, 320, 3)
