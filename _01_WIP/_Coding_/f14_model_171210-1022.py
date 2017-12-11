@@ -8,7 +8,8 @@ Created on Mon Nov 27 11:55:04 2017
 import csv
 import cv2
 import numpy as np
-from keras.models import Sequential, load_model
+import keras.backend as K
+from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda, Dropout
 from keras.layers.convolutional import Conv2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
@@ -19,15 +20,14 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from datetime import datetime as dt
 import time
-from transfer_learning_tools import *
-#from tools import *
+from tools import *
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 # Parameter
-nb_epoch     = 300  # 10
+nb_epoch     = 7  # 10
 batch_size   = 32 # 32 50 1000
-delta        = 0.2
+delta        = 0.25
 input_shape  = (image_height, image_width, 3) # (160, 320, 3)
 
 # In[ 1 ]: LOAD IMAGES AND LABELS
@@ -50,25 +50,27 @@ train_lines, validation_lines = train_test_split(lines, test_size=0.2) # Do we n
 train_generator      = generator(train_lines, batch_size=batch_size, delta=delta, image_width=image_width,image_height=image_height)
 validation_generator = generator(validation_lines, batch_size=batch_size, delta=delta, image_width=image_width,image_height=image_height)
 
-
-# Transfer learning: end of the pre-trained nvidia model
-model = load_model(pathData0+'model.h5') # load the pre-trained model
-model.pop() # slice off the end of the neuural network
-model.add(Dense(1)) # add a new fully connected layer
-model.layers[-1].name = 'dense_4'
-
-# Freeze all layers except the last one
-for i, layer in enumerate(model.layers[:-1]):
-    layer.trainable = False
-    print('< {} > {}'.format(i, layer.name))
-# Unfreeze the last layer
-model.layers[-1].trainable = True
-print('< {} > {}'.format(len(model.layers)-1, model.layers[-1].name))
-
-model.summary() # print the summary representation of the model
+# Build the model: nvidea model
+model = Sequential()
+model.add(Lambda(lambda x: x/255.0-0.5, input_shape=input_shape))
+model.add(Conv2D(24, (5, 5), padding='valid', activation='elu', strides=(2, 2)))
+model.add(Conv2D(32, (5, 5), padding='valid', activation='elu', strides=(2, 2)))
+model.add(Conv2D(64, (3, 3), padding='valid', activation='elu', strides=(2, 2)))
+model.add(MaxPooling2D(pool_size=(2,2)))
+model.add(Dropout(0.5))
+model.add(Flatten())
+model.add(Dense(100, activation='elu'))
+model.add(Dense(50, activation='elu'))
+model.add(Dropout(0.2))
+model.add(Dense(10, activation='elu'))
+model.add(Dense(1))
+model.summary()
 
 # Compile the model
-model.compile(loss='mse', optimizer='adam')
+#import keras.backend as K
+adam = keras.optimizers.Adam(lr=0.000085, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0) 
+#K.set_value(adam.lr, 0.5 * K.get_value(sgd.lr))
+model.compile(loss='mse', optimizer=adam)
 
 # Callbacks.Checkpoint: fault tolerance technique
 #from datetime import datetime as dt
@@ -109,3 +111,7 @@ plt.show()
 # Save the trained model
 model.save_weights('model_weights.h5')
 model.save(pathFile0+'model.h5')
+
+'''
+Next: download the model and see how well it drives the car in the simulator
+'''
