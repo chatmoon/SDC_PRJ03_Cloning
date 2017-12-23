@@ -66,27 +66,27 @@ def generator(center, left, right, steering, path=pathData3, batch_size=32, delt
             images_turn_right, angles_turn_right = images_turn_right + images_addon_right, angles_turn_right + angles_addon_right
             images_turn_left, angles_turn_left   = images_turn_left + images_addon_left, angles_turn_left + angles_addon_left
                      
-            # Horizontal shift
-            for i in range( int(len(images_center)-len(images_turn_right)) ):
-                index = random.randint(0,len(images_center)-1)
-                xPxl  = random.randint(-pXl, pXl) 
+            # # Horizontal shift
+            # for i in range( int(len(images_center)-len(images_turn_right)) ):
+            #     index = random.randint(0,len(images_center)-1)
+            #     xPxl  = random.randint(-pXl, pXl) 
                 
-                M     = np.float32([[1,0,xPxl],[0,1,0]])
-                image = cv2.warpAffine(images_center[index],M,(image_width,image_height))
+            #     M     = np.float32([[1,0,xPxl],[0,1,0]])
+            #     image = cv2.warpAffine(images_center[index],M,(image_width,image_height))
 
-                if   xPxl > 0:
-                    images_turn_right.append(image)
-                    angles_turn_right.append(angles_center[index]+pxlRate*xPxl)
-                elif xPxl < 0:
-                    images_turn_left.append(image)
-                    angles_turn_left.append(angles_center[index]+pxlRate*xPxl)
+            #     if   xPxl > 0:
+            #         images_turn_right.append(image)
+            #         angles_turn_right.append(angles_center[index]+pxlRate*xPxl)
+            #     elif xPxl < 0:
+            #         images_turn_left.append(image)
+            #         angles_turn_left.append(angles_center[index]+pxlRate*xPxl)
 
             # print('')
             # print('images_center[]: {}, images_turn_right: {}, images_turn_left: {}'.format(len(images_center),len(images_turn_right), len(images_turn_left)))
 
             # Merge
-            images = images_center + images_turn_left + images_turn_right 
-            angles = angles_center + angles_turn_left + angles_turn_right
+            images = images_center + images_turn_left #+ images_turn_right 
+            angles = angles_center + angles_turn_left #+ angles_turn_right
            
             # Randomly change brightness (to simulate day and night conditions) / hsv: hue, saturation, value
             augmented_images, augmented_angles = [], []
