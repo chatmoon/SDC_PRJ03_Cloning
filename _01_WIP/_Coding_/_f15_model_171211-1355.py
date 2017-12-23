@@ -23,9 +23,12 @@ import time
 from tools import *
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+import pandas
+import random
+plt.style.use('ggplot')
 
 # Parameter
-nb_epoch     = 7  # 10
+nb_epoch     = 5  # 10
 batch_size   = 32 # 32 50 1000
 delta        = 0.25
 input_shape  = (image_height, image_width, 3) # (160, 320, 3)
@@ -34,21 +37,24 @@ input_shape  = (image_height, image_width, 3) # (160, 320, 3)
  
 # Read driving_log.csv file
 #import csv
-lines = []
-with open(pathData2+'driving_log.csv') as csvfile:
-    reader = csv.reader(csvfile)
-    for line in reader:
-        lines.append(line)
+row_names   = ['center', 'left', 'right', 'steering', 'throttle', 'brake', 'speed']
+driving_log = pandas.read_csv(pathData2+'driving_log.csv', skiprows=[0], names=row_names)
+center      = driving_log.center.tolist()
+left        = driving_log.left.tolist()
+right       = driving_log.right.tolist()
+steering    = driving_log.steering.tolist()
 
 # Split dataset into two set: train, validation
 #from sklearn.model_selection import train_test_split
-train_lines, validation_lines = train_test_split(lines, test_size=0.2) # Do we need it?, see model.fit(xx, validation_split=0.2,xxx)
-
+train_center  , valid_center   = train_test_split(center, test_size=0.2) # Do we need it?, see model.fit(xx, valid_split=0.2,xxx)
+train_left    , valid_left     = train_test_split(left, test_size=0.2) 
+train_right   , valid_right    = train_test_split(right, test_size=0.2) 
+train_steering, valid_steering = train_test_split(steering, test_size=0.2) 
 
 # In[ X ]: BUILD MODEL TO PREDICT MY STEERING ANGLE
 # Generate training and validation dataset
-train_generator      = generator(train_lines, batch_size=batch_size, delta=delta, image_width=image_width,image_height=image_height)
-validation_generator = generator(validation_lines, batch_size=batch_size, delta=delta, image_width=image_width,image_height=image_height)
+train_generator = generator(train_center, train_left, train_right, train_steering, pathData3, batch_size, delta, image_width, image_height)
+valid_generator = generator(valid_center, valid_left, valid_right, valid_steering, pathData3, batch_size, delta, image_width, image_height)
 
 # Build the model: nvidea model
 model = Sequential()
@@ -68,9 +74,9 @@ model.summary()
 
 # Compile the model
 #import keras.backend as K
-adam = keras.optimizers.Adam(lr=0.000085, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0) 
+#adam = keras.optimizers.Adam(lr=0.000085, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0) 
 #K.set_value(adam.lr, 0.5 * K.get_value(sgd.lr))
-model.compile(loss='mse', optimizer=adam)
+model.compile(loss='mse', optimizer='adam')
 
 # Callbacks.Checkpoint: fault tolerance technique
 #from datetime import datetime as dt
@@ -88,12 +94,12 @@ callbacks_list = [earlystop,checkpoint, tensorboard]
 #import matplotlib.pyplot as plt
 #import matplotlib.image as mpimg
 history    = model.fit_generator(train_generator,
-                    steps_per_epoch  = len(train_lines),
+                    steps_per_epoch  = len(train_steering),
                     epochs           = nb_epoch,
                     verbose          = 1,
                     callbacks        = callbacks_list,
-                    validation_data  = validation_generator,
-                    validation_steps = len(validation_lines)
+                    validation_data       = valid_generator,
+                    validation_steps = len(valid_steering)
                     ) 
 
 # list history.keys()
