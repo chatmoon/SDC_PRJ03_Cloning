@@ -29,7 +29,7 @@ import argparse
 # path_defaut = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
 # path_
 # path_data   = path_defaut+'data/'+'sample/'
-dir_defaut = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/data/'
+dir_defaut = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
 data_set	= 'sample'
 # ex: dir_csv   = dir_defaut + data_set + '/'
 # ex: dir_image = dir_csv + 'IMG/'
@@ -51,7 +51,7 @@ def parse_args():
 def data_load(args):
 	# Read driving_log.csv file
 	lines = []
-	pathData2 = args.dir+args.dtset+'/'
+	pathData2 = args.dir+'data/'+args.dtset+'/'
 	with open(pathData2+'driving_log.csv') as csvfile:
 	    reader = csv.reader(csvfile)
 	    for line in reader:
@@ -116,6 +116,10 @@ def model_train(args, model, train_lines, validation_lines):
 	                    validation_steps = len(validation_lines)
 	                    ) 
 
+	# Save the trained model
+	model.save_weights(pathFile0+'model_weights.h5')
+	model.save(pathFile0+'model.h5')
+
 	# list history.keys()
 	#print(history.history.keys())
 
@@ -129,10 +133,6 @@ def model_train(args, model, train_lines, validation_lines):
 	plt.savefig(pathFile0+'figure_'+postfix+'.png')
 	if args.show:
 		plt.show()
-
-	# Save the trained model
-	model.save_weights(pathFile0+'model_weights.h5')
-	model.save(pathFile0+'model.h5')
 
 	return history
 

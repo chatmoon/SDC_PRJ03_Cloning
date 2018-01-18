@@ -6,7 +6,7 @@ from sklearn.utils import shuffle
 image_height, image_width =  32, 155
 pathData0 = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
 pathData1 = pathData0+'data/'
-pathData2 = pathData1+'myDebug/' # BEFORE USING SAMPLE CHANGE DRIVE.PY ',' vs '.' # 'myDebug/' 'sample/' < NOT USE 'myData_171202-0037/' >
+pathData2 = pathData1+'sample/' # BEFORE USING SAMPLE CHANGE DRIVE.PY ',' vs '.' # 'myDebug/' 'sample/' < NOT USE 'myData_171202-0037/' >
 pathData3 = pathData2+'IMG/' # '../data/IMG' # <- to be updated with the AWS or Google path repo
 pathData4 = pathData0+'logs/'
 pathData5 = pathData4+'model/'
@@ -29,7 +29,6 @@ def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_hei
                     source_path = batch_sample[i] # source_path = line[i] # local path 
                     filename = source_path.split('\\')[-1] # ('/')[-1] # file name
                     current_path = pathData3 + filename
-
                     # Import images
                     image = cv2.imread(current_path)
                     images.append(image)
@@ -45,7 +44,6 @@ def generator(lines, batch_size=32, delta=0.2, image_width=image_width,image_hei
             # In[ X ]: DATA AUGMENTATION
             augmented_images, augmented_angles = [], []
             for image, angle in zip(images,angles):
-                # augmented_image, augmented_image, augmented_image, augmented_angle, augmented_image = [], [], [], [], []
                 augmented_image, augmented_angle = [], []
                 # Crop
                 augmented_image = image[70:-25, :, :]    # (65,320,3)
