@@ -4,7 +4,9 @@
 # KERAS
 # ----------------------------------------------
 . How can I remove a layer from a Sequential model?
-  - https://keras.io/getting-started/faq/#how-can-i-remove-a-layer-from-a-sequential-model
+  ==> https://keras.io/getting-started/faq/#how-can-i-remove-a-layer-from-a-sequential-model
+. Usage of initializers
+  ==> https://keras.io/initializers/
 # ----------------------------------------------
 # PYTHON
 # ----------------------------------------------
