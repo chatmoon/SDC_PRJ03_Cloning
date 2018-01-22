@@ -12,23 +12,29 @@
 # ----------------------------------------------
 . [BOOK] Mastering Object-oriented Python
   ==> ISBN 978-1-78328-097-1
-. Part 4: The Logic of the Script
+. [main] Part 4: The Logic of the Script
   ==> http://newcoder.io/api/part-4/
-. 29.4. __main__ — Top-level script environment
+. [main] 29.4. __main__ — Top-level script environment
   ==> https://docs.python.org/3/library/__main__.html
-. Better option parsing in Python:
+. [argparse] Better option parsing in Python:
   ==> http://leancrew.com/all-this/2015/06/better-option-parsing-in-python-maybe/
-. Where to put argparse?
+. [argparse] Where to put argparse?
   ==> https://www.reddit.com/r/learnpython/comments/3do2wr/where_to_put_argparse/
-. python doc : 16.4. argparse — Parser for command-line options, arguments and sub-commands
+. [argparse] python doc : 16.4. argparse — Parser for command-line options, arguments and sub-commands
   ==> https://docs.python.org/3/library/argparse.html
-. [quick reference] 28.10. argparse: Processing command line arguments
+. [argparse] quick reference - 28.10. argparse: Processing command line arguments
   ==> http://infohost.nmt.edu/~shipman/doc/python27/web/argparse.html
-. How to pass files to script with glob AND specific path, with error if path does not exist?
+. [glob] How to pass files to script with glob AND specific path, with error if path does not exist?
   ==> https://stackoverflow.com/questions/12117467/how-to-pass-files-to-script-with-glob-and-specific-path-with-error-if-path-does?rq=1
+. [glob] 11.7. glob — Unix style pathname pattern expansion
+  ==> https://docs.python.org/3/library/glob.html
 . [Numpy] the difference between random.uniform() and random.random()
   - https://stackoverflow.com/questions/30030659/in-python-what-is-the-difference-between-random-uniform-and-random-random  
 . [Modules] https://docs.python.org/3/tutorial/modules.html
+. [github] Understanding the GitHub Flow
+  ==> https://guides.github.com/introduction/flow/
+. [github] A successful Git branching model
+  ==> http://nvie.com/posts/a-successful-git-branching-model/
 
 # ----------------------------------------------
 # TENSORBOARD
