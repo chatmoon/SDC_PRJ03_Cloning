@@ -22,6 +22,10 @@
   ==> https://www.reddit.com/r/learnpython/comments/3do2wr/where_to_put_argparse/
 . python doc : 16.4. argparse — Parser for command-line options, arguments and sub-commands
   ==> https://docs.python.org/3/library/argparse.html
+. [quick reference] 28.10. argparse: Processing command line arguments
+  ==> http://infohost.nmt.edu/~shipman/doc/python27/web/argparse.html
+. How to pass files to script with glob AND specific path, with error if path does not exist?
+  ==> https://stackoverflow.com/questions/12117467/how-to-pass-files-to-script-with-glob-and-specific-path-with-error-if-path-does?rq=1
 . [Numpy] the difference between random.uniform() and random.random()
   - https://stackoverflow.com/questions/30030659/in-python-what-is-the-difference-between-random-uniform-and-random-random  
 . [Modules] https://docs.python.org/3/tutorial/modules.html
