@@ -21,20 +21,13 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from datetime import datetime as dt
 import time
-from newTool import generator, parse_args
+from Tool import generator, parse_args
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 import matplotlib.image as mpimg
 import pandas
 import random
 import argparse
-
-# # Parameter
-# default_dir     = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
-# default_dataset	= 'sample'
-# # ex: dir_csv   = default_dir + 'data/' + default_dataset + '/'
-# # ex: dir_image = dir_csv + 'IMG/'
-# default_input_shape = (32, 155, 3) # (image_height, image_width, 3)
 
 # Helper function(s): create directory tree
 def dir_check(path):
@@ -52,24 +45,6 @@ def dir_create(path, dir_dictionary):
                 dir_check(path+dir_root+'/'+dir_subroot+'/')
         except:
             pass
-
-# # Helper function(s): command-line / parse parameters
-# def parse_args():
-# 	parser = argparse.ArgumentParser()
-# 	parser.add_argument('-dir', help='root directory path', dest='dir', type=str, default=default_dir)
-# 	parser.add_argument('-dtset', help='data set folder name', dest='dtset', type=str, default=default_dataset)
-# 	parser.add_argument('-dir_csv', help='driving_log.csv directory path', dest='dir_csv', type=str, default=default_dir+'data/'+default_dataset+'/')
-# 	parser.add_argument('-dir_image', help='image directory path', dest='dir_image', type=str, default=default_dir+'data/'+default_dataset+'/IMG/')
-# 	parser.add_argument('-shape', help='tuple = ( image_height, image_width, chanel )', dest='input_shape', type=tuple, default=default_input_shape) # (32, 155, 3), (32, 32, 3) or (64, 64, 3)
-# 	parser.add_argument('-epoch', help='number of epoch', dest='nb_epoch', type=int, default=10)
-# 	parser.add_argument('-batch', help='batch size', dest='batch_size', type=int, default=32)
-# 	parser.add_argument('-delta', help='delta angle', dest='delta', type=float, default=0.2)
-# 	parser.add_argument('-show', help='show the LOSS and VAL_LOSS graph', dest='show', action='store_true')
-# 	parser.add_argument('-tune', help='activate the fine tune mode - by default it is in training mode', dest='tune', action='store_true')
-# 	parser.add_argument('-freeze', help='freeze all layers except the last one when the fine tune mode is activated - by default these layers are unfrozen', dest='freeze', action='store_false')
-# 	args   = parser.parse_args()
-
-# 	return args
 
 # Helper function(s): load lines from the driving_log.csv file
 def data_load(args):

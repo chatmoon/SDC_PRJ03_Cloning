@@ -1,12 +1,12 @@
-import cv2 #, os
+import cv2
 import numpy as np
 #import matplotlib.image as mpimg
 from sklearn.utils import shuffle
 import argparse
-# from newModel import parse_args
+
 # Parameter
 default_dir     = 'C:/Users/mo/home/_eSDC2_/_PRJ03_/_2_WIP/_171126-1433_BehavioralCloning/'
-default_dataset	= 'sample' # 'myDebug' # 'sample'
+default_dataset = 'sample' # 'myDebug' # 'sample'
 # ex: dir_csv   = default_dir + 'data/' + default_dataset + '/'
 # ex: dir_image = dir_csv + 'IMG/'
 default_input_shape = (32, 155, 3) # (image_height, image_width, 3)
@@ -14,19 +14,19 @@ default_input_shape = (32, 155, 3) # (image_height, image_width, 3)
 
 # Helper function(s): command-line / parse parameters
 def parse_args():
-	parser = argparse.ArgumentParser(prog='behavioral cloning', description='train or fine tune the model')
-	parser.add_argument('-p', '--dir', help='root directory path', dest='dir', action='store', type=str, default=default_dir)
-	parser.add_argument('-d', '--dtset', help='data set folder name', dest='dtset', action='store', type=str, default=default_dataset)
-	parser.add_argument('-s', '--shape', help='tuple = ( image_height, image_width, chanel )', dest='input_shape', type=tuple, default=default_input_shape) # (32, 155, 3), (32, 32, 3) or (64, 64, 3)
-	parser.add_argument('-e', '--epoch', help='number of epoch', dest='nb_epoch', type=int, default=10)
-	parser.add_argument('-b', '--batch', help='batch size', dest='batch_size', type=int, default=32)
-	parser.add_argument('-a', '--delta', help='delta angle', dest='delta', type=float, default=0.2)
-	parser.add_argument('-v', '--show', help='plot and show the LOSS and VAL_LOSS graph', dest='show', action='store_true', default=False)
-	parser.add_argument('-t', '--tune', help='activate the fine tune mode - by default it is in training mode', dest='tune', action='store_true', default=False)
-	parser.add_argument('-f', '--freeze', help='freeze all layers except the last one when the fine tune mode is activated - by default these layers are unfrozen', dest='freeze', action='store_false')
-	args   = parser.parse_args()
+    parser = argparse.ArgumentParser(prog='behavioral cloning', description='train or fine tune the model')
+    parser.add_argument('-p', '--dir', help='root directory path', dest='dir', action='store', type=str, default=default_dir)
+    parser.add_argument('-d', '--dtset', help='data set folder name', dest='dtset', action='store', type=str, default=default_dataset)
+    parser.add_argument('-s', '--shape', help='tuple = ( image_height, image_width, chanel )', dest='input_shape', type=tuple, default=default_input_shape) # (32, 155, 3), (32, 32, 3) or (64, 64, 3)
+    parser.add_argument('-e', '--epoch', help='number of epoch', dest='nb_epoch', type=int, default=10)
+    parser.add_argument('-b', '--batch', help='batch size', dest='batch_size', type=int, default=32)
+    parser.add_argument('-a', '--delta', help='delta angle', dest='delta', type=float, default=0.2)
+    parser.add_argument('-v', '--show', help='plot and show the LOSS and VAL_LOSS graph', dest='show', action='store_true', default=False)
+    parser.add_argument('-t', '--tune', help='activate the fine tune mode - by default it is in training mode', dest='tune', action='store_true', default=False)
+    parser.add_argument('-f', '--freeze', help='freeze all layers except the last one when the fine tune mode is activated - by default these layers are unfrozen', dest='freeze', action='store_false')
+    args   = parser.parse_args()
 
-	return args
+    return args
 
 flags = parse_args()
 
