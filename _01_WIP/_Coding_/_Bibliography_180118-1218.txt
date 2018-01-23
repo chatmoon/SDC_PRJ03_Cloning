@@ -59,6 +59,11 @@
 . Traduction des formules Excel français/anglais
   - https://www.cyann.net/2010/08/29/traduction-formules-excel-francais-anglais-french-english/
 # ----------------------------------------------
+# WINDOWS
+# ----------------------------------------------
+. How to export the directory tree of a folder in Windows
+  ==> https://www.digitalcitizen.life/how-export-directory-tree-folder-windows
+# ----------------------------------------------
 # xxx
 # ----------------------------------------------
 
