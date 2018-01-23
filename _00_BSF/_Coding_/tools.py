@@ -1,3 +1,27 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Sat 23 11:55:04 2017
+@author: mo
+
+#ENVIRONMENT :
+- platform : win10-64
+- GPU: Nvidia Geforce 840M
+- tensorflow-gpu 1.1.0 <pip>
+- Keras 2.1.1 <pip>
+- python 3.5.2 0
+- numpy 1.12.1 <pip>
+- opencv3 3.1.0 py35_0 menpo
+- scikit-learn 0.19.0 np112py35_0
+- scipy 1.0.0 <pip>
+- h5py 2.7.1 <pip>
+- hdf5 1.10.1 h98b8871_1 anaconda
+- eventlet 0.21.0 <pip>
+- Flask 0.12.2 <pip>
+- greenlet 0.4.12 <pip>
+- h5py 2.7.1 <pip>
+- hdf5 1.10.1 h98b8871_1 anaconda
+- imageio 2.1.2 <pip>
+"""
 import cv2 #, os
 import numpy as np
 #import matplotlib.image as mpimg

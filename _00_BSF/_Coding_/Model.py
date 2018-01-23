@@ -1,7 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov 27 11:55:04 2017
+Created on Mon Sat 23 11:55:04 2017
 @author: mo
+
+#ENVIRONMENT :
+- platform : win10-64
+- GPU: Nvidia Geforce 840M
+- tensorflow-gpu 1.1.0 <pip>
+- Keras 2.1.1 <pip>
+- python 3.5.2 0
+- numpy 1.12.1 <pip>
+- opencv3 3.1.0 py35_0 menpo
+- scikit-learn 0.19.0 np112py35_0
+- scipy 1.0.0 <pip>
+- h5py 2.7.1 <pip>
+- hdf5 1.10.1 h98b8871_1 anaconda
+- eventlet 0.21.0 <pip>
+- Flask 0.12.2 <pip>
+- greenlet 0.4.12 <pip>
+- h5py 2.7.1 <pip>
+- hdf5 1.10.1 h98b8871_1 anaconda
+- imageio 2.1.2 <pip>
 """
 # In[ 0 ]: PREREQUISITES
 # Import libraries
@@ -21,7 +40,7 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from datetime import datetime as dt
 import time
-from Tool import generator, parse_args
+from tools import generator, parse_args
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 import matplotlib.image as mpimg
@@ -29,6 +48,7 @@ import pandas
 import random
 import argparse
 
+# In[ 1 ]: HELPER FUNCTIONS
 # Helper function(s): create directory tree
 def dir_check(path):
     '''Create a folder if not present'''
@@ -189,6 +209,7 @@ def model_train(args, model, train_lines, validation_lines):
 	return history
 
 
+# In[ 2 ]: TOP-LEVEL SCRIPT
 def main():
 	# parse a set of parameters
 	args = parse_args()
