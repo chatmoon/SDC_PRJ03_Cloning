@@ -1,0 +1,68 @@
+# BIBLIOGRAPHY:
+
+# ----------------------------------------------
+# KERAS
+# ----------------------------------------------
+. How can I remove a layer from a Sequential model?
+  ==> https://keras.io/getting-started/faq/#how-can-i-remove-a-layer-from-a-sequential-model
+. Usage of initializers
+  ==> https://keras.io/initializers/
+# ----------------------------------------------
+# PYTHON
+# ----------------------------------------------
+. [BOOK] Mastering Object-oriented Python
+  ==> ISBN 978-1-78328-097-1
+. [main] Part 4: The Logic of the Script
+  ==> http://newcoder.io/api/part-4/
+. [main] 29.4. __main__ — Top-level script environment
+  ==> https://docs.python.org/3/library/__main__.html
+. [argparse] Better option parsing in Python:
+  ==> http://leancrew.com/all-this/2015/06/better-option-parsing-in-python-maybe/
+. [argparse] Where to put argparse?
+  ==> https://www.reddit.com/r/learnpython/comments/3do2wr/where_to_put_argparse/
+. [argparse] python doc : 16.4. argparse — Parser for command-line options, arguments and sub-commands
+  ==> https://docs.python.org/3/library/argparse.html
+. [argparse] quick reference - 28.10. argparse: Processing command line arguments
+  ==> http://infohost.nmt.edu/~shipman/doc/python27/web/argparse.html
+. [glob] How to pass files to script with glob AND specific path, with error if path does not exist?
+  ==> https://stackoverflow.com/questions/12117467/how-to-pass-files-to-script-with-glob-and-specific-path-with-error-if-path-does?rq=1
+. [glob] 11.7. glob — Unix style pathname pattern expansion
+  ==> https://docs.python.org/3/library/glob.html
+. [Numpy] the difference between random.uniform() and random.random()
+  - https://stackoverflow.com/questions/30030659/in-python-what-is-the-difference-between-random-uniform-and-random-random  
+. [Modules] https://docs.python.org/3/tutorial/modules.html
+. [github] Understanding the GitHub Flow
+  ==> https://guides.github.com/introduction/flow/
+. [github] A successful Git branching model
+  ==> http://nvie.com/posts/a-successful-git-branching-model/
+
+# ----------------------------------------------
+# TENSORBOARD
+# ----------------------------------------------
+. How does one interpret histograms given by TensorFlow in TensorBoard?
+  - https://stats.stackexchange.com/questions/220491/how-does-one-interpret-histograms-given-by-tensorflow-in-tensorboard
+# ----------------------------------------------
+# PANDAS
+# ----------------------------------------------
+. Quick and Dirty Data Analysis with Pandas
+  ==> https://machinelearningmastery.com/quick-and-dirty-data-analysis-with-pandas/
+. Adobe Color CC
+  ==> https://color.adobe.com/Copia-de-Copy-of-Sunset-Camping-color-theme-10363657/
+# ----------------------------------------------
+# JUPYTER NOTEBOOK
+# ----------------------------------------------
+. jupiter notebook: Embed a YouTube video
+  ==> https://stackoverflow.com/questions/11804820/embed-a-youtube-video
+# ----------------------------------------------
+# EXCEL
+# ----------------------------------------------
+. Traduction des formules Excel français/anglais
+  - https://www.cyann.net/2010/08/29/traduction-formules-excel-francais-anglais-french-english/
+# ----------------------------------------------
+# xxx
+# ----------------------------------------------
+
+
+
+
+
